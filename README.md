@@ -1,5 +1,7 @@
 ## Edomi-Docker
 
+Forked from [edomi-docker](https://github.com/starwarsfan/edomi-docker) by [starwarsfan](https://github.com/starwarsfan) for usage in UnRaid.
+
 This is a Docker implementation for Edomi, a PHP-based smarthome framework.
 
 For more information please refer to [Official website](http://www.edomi.de/) or [Support forum](https://knx-user-forum.de/forum/projektforen/edomi)

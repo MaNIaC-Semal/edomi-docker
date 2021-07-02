@@ -1,5 +1,5 @@
-FROM starwarsfan/edomi-baseimage:arm32v7-latest
-MAINTAINER Yves Schumann <y.schumann@yetnet.ch>
+FROM maniac-semal/docker-edomi-unraid:latest
+MAINTAINER Stefan Gaida
 
 # Define build arguments
 ARG EDOMI_VERSION=EDOMI_203.tar
@@ -23,11 +23,12 @@ RUN echo -e "${ROOT_PASS}\n${ROOT_PASS}" | (passwd --stdin root) \
 # Replace 'reboot' and 'shutdown' with own handler scripts
 COPY bin/start.sh ${START_SCRIPT}
 COPY sbin/reboot sbin/shutdown sbin/service /sbin/
-RUN chmod +x ${START_SCRIPT} /sbin/reboot /sbin/shutdown /sbin/service
+RUN chmod +x ${START_SCRIPT} /sbin/reboot /sbin/shutdown /sbin/service \
+ && dos2unix /sbin/reboot /sbin/shutdown /sbin/service
 
-ADD http://edomi.de/download/install/${EDOMI_VERSION} ${EDOMI_ARCHIVE}
 RUN mkdir ${EDOMI_EXTRACT_PATH} \
- && tar -xf ${EDOMI_ARCHIVE} -C ${EDOMI_EXTRACT_PATH}
+ && cd ${EDOMI_EXTRACT_PATH} \
+ && wget -c http://edomi.de/download/install/${EDOMI_VERSION} -O - | tar -x edomi.edomiinstall
 
 # Copy modified install script into image
 COPY bin/install.sh ${EDOMI_EXTRACT_PATH}
@@ -52,7 +53,10 @@ RUN systemctl start mariadb \
  && systemctl stop mariadb
 
 # Mount points
-VOLUME ${EDOMI_BACKUP_DIR} ${EDOMI_DB_DIR} ${EDOMI_INSTALL_DIR}
+VOLUME /var/edomi-backups /var/lib/mysql /usr/local/edomi
+
+# Ports
+EXPOSE 80 8080 3671 50000 50001 22
 
 # Clear default root pass env var
 ENV ROOT_PASS=''
