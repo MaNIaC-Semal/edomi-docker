@@ -1,4 +1,4 @@
-FROM maniac-semal/edomi-docker:latest
+FROM github.com/maniac-semal/edomi-docker:latest
 MAINTAINER Stefan Gaida
 
 # Define build arguments
