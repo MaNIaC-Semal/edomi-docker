@@ -1,4 +1,4 @@
-FROM maniac-semal/docker-edomi-unraid:latest
+FROM maniac-semal/edomi-docker:latest
 MAINTAINER Stefan Gaida
 
 # Define build arguments
